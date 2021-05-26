@@ -1,4 +1,5 @@
-import os
+from os.path import exists, dirname
+from os import makedirs, remove
 
 from metrics import STATUSES
 from mbrgk import DG
@@ -59,6 +60,16 @@ def get_zbx_measures(host, port, filename):
                     print(f"{short_name}={measure}", file=fl)
 
 
+def create_dir(full_dir_path):
+    if not exists(full_dir_path):
+        makedirs(full_dir_path)
+
+
+def remove_file(full_file_name):
+    if exists(full_file_name):
+        remove(full_file_name)
+
+
 def run():
     parser = argparse.ArgumentParser(prog='dg-status',
                                      description='Get generating set controller status.')
@@ -101,7 +112,9 @@ def batch():
         if keys.intersection(expected_keys) != expected_keys:
             print(f"Not enough parameters in LLD json: {expected_keys.difference(keys)}")
             exit(3)
-        os.remove(itm['{#DGMEASUREFILE}'])
+        metrics_file = itm['{#DGMEASUREFILE}']
+        remove_file(metrics_file)
+        create_dir(dirname(metrics_file))
         get_zbx_measures(host=itm['{#DGHOST}'], port=itm['{#DGPORT}'], filename=itm['{#DGMEASUREFILE}'])
 
 
