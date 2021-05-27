@@ -48,10 +48,10 @@ def get_zbx_measures(host, port, filename):
         for measure_name, measure in data.items():
             if measure_name == 'Status Device global status(bit 0-bit15)':
                 for k, v in STATUSES.items():
-                    if k in measure:
+                    if k in measure[0]:
                         print(f"{k}=1", file=fl)
                     else:
-                        print(f"{k}=1", file=fl)
+                        print(f"{k}=0", file=fl)
             else:
                 short_name = re.sub(BEGIN, '', measure_name, 1)
                 if isinstance(measure, tuple):
