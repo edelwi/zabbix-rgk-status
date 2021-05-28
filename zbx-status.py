@@ -113,7 +113,7 @@ def batch():
             print(f"Not enough parameters in LLD json: {expected_keys.difference(keys)}")
             exit(3)
         metrics_file = itm['{#DGMEASUREFILE}']
-        remove_file(metrics_file)
+        #remove_file(metrics_file)
         create_dir(dirname(metrics_file))
         get_zbx_measures(host=itm['{#DGHOST}'], port=itm['{#DGPORT}'], filename=itm['{#DGMEASUREFILE}'])
 
