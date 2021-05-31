@@ -1,0 +1,596 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<zabbix_export>
+    <version>5.0</version>
+    <date>2021-05-31T08:18:25Z</date>
+    <groups>
+        <group>
+            <name>Templates</name>
+        </group>
+    </groups>
+    <templates>
+        <template>
+            <template>Template Lovato RGK Status</template>
+            <name>Template Lovato RGK Status</name>
+            <description>for Lovato GENERATING SET CONTROLLER</description>
+            <groups>
+                <group>
+                    <name>Templates</name>
+                </group>
+            </groups>
+            <discovery_rules>
+                <discovery_rule>
+                    <name>Get generators</name>
+                    <key>vfs.file.contents[/etc/zabbix/lovato/dglld.json]</key>
+                    <delay>20m</delay>
+                    <description>Read generators hostnames and ports.</description>
+                    <item_prototypes>
+                        <item_prototype>
+                            <name>{#DGHOST} Alarms enabled</name>
+                            <key>vfs.file.regexp[{#DGMEASUREFILE},&quot;Alarms enabled=(.*)$&quot;,,,,\1]</key>
+                            <history>30d</history>
+                            <description>Alarms enabled</description>
+                            <application_prototypes>
+                                <application_prototype>
+                                    <name>DG {#DGHOST}</name>
+                                </application_prototype>
+                            </application_prototypes>
+                        </item_prototype>
+                        <item_prototype>
+                            <name>{#DGHOST} AUT mode</name>
+                            <key>vfs.file.regexp[{#DGMEASUREFILE},&quot;AUT mode=(.*)$&quot;,,,,\1]</key>
+                            <history>30d</history>
+                            <description>AUT mode</description>
+                            <application_prototypes>
+                                <application_prototype>
+                                    <name>DG {#DGHOST}</name>
+                                </application_prototype>
+                            </application_prototypes>
+                            <trigger_prototypes>
+                                <trigger_prototype>
+                                    <expression>{last()}=0</expression>
+                                    <name>AUT mode off (generator {#DGHOST})</name>
+                                    <priority>AVERAGE</priority>
+                                    <description>Automatic mode off.</description>
+                                    <manual_close>YES</manual_close>
+                                </trigger_prototype>
+                            </trigger_prototypes>
+                        </item_prototype>
+                        <item_prototype>
+                            <name>{#DGHOST} Automatic test enabled</name>
+                            <key>vfs.file.regexp[{#DGMEASUREFILE},&quot;Automatic test enabled=(.*)$&quot;,,,,\1]</key>
+                            <history>30d</history>
+                            <description>Automatic test enabled</description>
+                            <application_prototypes>
+                                <application_prototype>
+                                    <name>DG {#DGHOST}</name>
+                                </application_prototype>
+                            </application_prototypes>
+                        </item_prototype>
+                        <item_prototype>
+                            <name>{#DGHOST} Automatic test running</name>
+                            <key>vfs.file.regexp[{#DGMEASUREFILE},&quot;Automatic test running=(.*)$&quot;,,,,\1]</key>
+                            <history>30d</history>
+                            <description>Automatic test running</description>
+                            <application_prototypes>
+                                <application_prototype>
+                                    <name>DG {#DGHOST}</name>
+                                </application_prototype>
+                            </application_prototypes>
+                        </item_prototype>
+                        <item_prototype>
+                            <name>{#DGHOST} Battery voltage</name>
+                            <key>vfs.file.regexp[{#DGMEASUREFILE},&quot;Battery voltage=(.*)$&quot;,,,,\1]</key>
+                            <history>30d</history>
+                            <value_type>FLOAT</value_type>
+                            <units>V</units>
+                            <description>Battery voltage</description>
+                            <application_prototypes>
+                                <application_prototype>
+                                    <name>DG {#DGHOST}</name>
+                                </application_prototype>
+                            </application_prototypes>
+                        </item_prototype>
+                        <item_prototype>
+                            <name>{#DGHOST} D+ input voltage</name>
+                            <key>vfs.file.regexp[{#DGMEASUREFILE},&quot;D\+ input voltage=(.*)$&quot;,,,,\1]</key>
+                            <history>30d</history>
+                            <value_type>FLOAT</value_type>
+                            <units>V</units>
+                            <description>D+ input voltage</description>
+                            <application_prototypes>
+                                <application_prototype>
+                                    <name>DG {#DGHOST}</name>
+                                </application_prototype>
+                            </application_prototypes>
+                        </item_prototype>
+                        <item_prototype>
+                            <name>{#DGHOST} Electrical fault</name>
+                            <key>vfs.file.regexp[{#DGMEASUREFILE},&quot;Electrical fault=(.*)$&quot;,,,,\1]</key>
+                            <history>30d</history>
+                            <description>Electrical fault</description>
+                            <application_prototypes>
+                                <application_prototype>
+                                    <name>DG {#DGHOST}</name>
+                                </application_prototype>
+                            </application_prototypes>
+                            <trigger_prototypes>
+                                <trigger_prototype>
+                                    <expression>{last()}=1</expression>
+                                    <name>{#DGHOST} Electrical fault</name>
+                                    <priority>HIGH</priority>
+                                    <manual_close>YES</manual_close>
+                                </trigger_prototype>
+                            </trigger_prototypes>
+                        </item_prototype>
+                        <item_prototype>
+                            <name>{#DGHOST} Engine partial running time</name>
+                            <key>vfs.file.regexp[{#DGMEASUREFILE},&quot;Engine partial running time=(.*)$&quot;,,,,\1]</key>
+                            <history>2d</history>
+                            <units>s</units>
+                            <description>Engine partial running time</description>
+                            <application_prototypes>
+                                <application_prototype>
+                                    <name>DG {#DGHOST}</name>
+                                </application_prototype>
+                            </application_prototypes>
+                        </item_prototype>
+                        <item_prototype>
+                            <name>{#DGHOST} Engine running</name>
+                            <key>vfs.file.regexp[{#DGMEASUREFILE},&quot;Engine running=(.*)$&quot;,,,,\1]</key>
+                            <history>30d</history>
+                            <description>Engine running</description>
+                            <application_prototypes>
+                                <application_prototype>
+                                    <name>DG {#DGHOST}</name>
+                                </application_prototype>
+                            </application_prototypes>
+                            <trigger_prototypes>
+                                <trigger_prototype>
+                                    <expression>{last()}=1</expression>
+                                    <recovery_mode>RECOVERY_EXPRESSION</recovery_mode>
+                                    <recovery_expression>{last()}=0</recovery_expression>
+                                    <name>Engine on (generator {#DGHOST})</name>
+                                    <priority>HIGH</priority>
+                                    <description>Engine on</description>
+                                    <manual_close>YES</manual_close>
+                                </trigger_prototype>
+                            </trigger_prototypes>
+                        </item_prototype>
+                        <item_prototype>
+                            <name>{#DGHOST} Engine speed</name>
+                            <key>vfs.file.regexp[{#DGMEASUREFILE},&quot;Engine speed=(.*)$&quot;,,,,\1]</key>
+                            <history>30d</history>
+                            <value_type>FLOAT</value_type>
+                            <units>rpm</units>
+                            <description>Engine speed</description>
+                            <application_prototypes>
+                                <application_prototype>
+                                    <name>DG {#DGHOST}</name>
+                                </application_prototype>
+                            </application_prototypes>
+                        </item_prototype>
+                        <item_prototype>
+                            <name>{#DGHOST} Engine working time</name>
+                            <key>vfs.file.regexp[{#DGMEASUREFILE},&quot;Engine working time=(.*)$&quot;,,,,\1]</key>
+                            <history>2d</history>
+                            <units>s</units>
+                            <description>Engine working time</description>
+                            <application_prototypes>
+                                <application_prototype>
+                                    <name>DG {#DGHOST}</name>
+                                </application_prototype>
+                            </application_prototypes>
+                        </item_prototype>
+                        <item_prototype>
+                            <name>{#DGHOST} Eqv. Phase-To-Phase Voltage - Generator</name>
+                            <key>vfs.file.regexp[{#DGMEASUREFILE},&quot;Eqv. Phase-To-Phase Voltage - Generator=(.*)$&quot;,,,,\1]</key>
+                            <history>30d</history>
+                            <value_type>FLOAT</value_type>
+                            <units>V</units>
+                            <description>Eqv. Phase-To-Phase Voltage - Generator</description>
+                            <application_prototypes>
+                                <application_prototype>
+                                    <name>DG {#DGHOST}</name>
+                                </application_prototype>
+                            </application_prototypes>
+                        </item_prototype>
+                        <item_prototype>
+                            <name>{#DGHOST} Eqv. Phase Voltage - Generator</name>
+                            <key>vfs.file.regexp[{#DGMEASUREFILE},&quot;Eqv. Phase Voltage - Generator=(.*)$&quot;,,,,\1]</key>
+                            <history>30d</history>
+                            <value_type>FLOAT</value_type>
+                            <units>V</units>
+                            <description>Eqv. Phase Voltage - Generator</description>
+                            <application_prototypes>
+                                <application_prototype>
+                                    <name>DG {#DGHOST}</name>
+                                </application_prototype>
+                            </application_prototypes>
+                        </item_prototype>
+                        <item_prototype>
+                            <name>{#DGHOST} Frequency - Generator</name>
+                            <key>vfs.file.regexp[{#DGMEASUREFILE},&quot;Frequency - Generator=(.*)$&quot;,,,,\1]</key>
+                            <history>30d</history>
+                            <value_type>FLOAT</value_type>
+                            <units>Hz</units>
+                            <description>Frequency - Generator</description>
+                            <application_prototypes>
+                                <application_prototype>
+                                    <name>DG {#DGHOST}</name>
+                                </application_prototype>
+                            </application_prototypes>
+                        </item_prototype>
+                        <item_prototype>
+                            <name>{#DGHOST} Fuel</name>
+                            <key>vfs.file.regexp[{#DGMEASUREFILE},&quot;Fuel=(.*)$&quot;,,,,\1]</key>
+                            <history>7d</history>
+                            <value_type>FLOAT</value_type>
+                            <units>%</units>
+                            <description>Fuel</description>
+                            <application_prototypes>
+                                <application_prototype>
+                                    <name>DG {#DGHOST}</name>
+                                </application_prototype>
+                            </application_prototypes>
+                        </item_prototype>
+                        <item_prototype>
+                            <name>{#DGHOST} Gen. voltage OK</name>
+                            <key>vfs.file.regexp[{#DGMEASUREFILE},&quot;Gen. voltage OK=(.*)$&quot;,,,,\1]</key>
+                            <history>30d</history>
+                            <description>Gen. voltage OK</description>
+                            <application_prototypes>
+                                <application_prototype>
+                                    <name>DG {#DGHOST}</name>
+                                </application_prototype>
+                            </application_prototypes>
+                        </item_prototype>
+                        <item_prototype>
+                            <name>{#DGHOST} Generator contactor closed</name>
+                            <key>vfs.file.regexp[{#DGMEASUREFILE},&quot;Generator contactor closed=(.*)$&quot;,,,,\1]</key>
+                            <history>30d</history>
+                            <description>Generator contactor closed</description>
+                            <application_prototypes>
+                                <application_prototype>
+                                    <name>DG {#DGHOST}</name>
+                                </application_prototype>
+                            </application_prototypes>
+                        </item_prototype>
+                        <item_prototype>
+                            <name>{#DGHOST} Generator ready</name>
+                            <key>vfs.file.regexp[{#DGMEASUREFILE},&quot;Generator ready=(.*)$&quot;,,,,\1]</key>
+                            <history>30d</history>
+                            <description>Generator ready</description>
+                            <application_prototypes>
+                                <application_prototype>
+                                    <name>DG {#DGHOST}</name>
+                                </application_prototype>
+                            </application_prototypes>
+                        </item_prototype>
+                        <item_prototype>
+                            <name>{#DGHOST} Global alarm</name>
+                            <key>vfs.file.regexp[{#DGMEASUREFILE},&quot;Global alarm=(.*)$&quot;,,,,\1]</key>
+                            <history>30d</history>
+                            <description>Global alarm</description>
+                            <application_prototypes>
+                                <application_prototype>
+                                    <name>DG {#DGHOST}</name>
+                                </application_prototype>
+                            </application_prototypes>
+                        </item_prototype>
+                        <item_prototype>
+                            <name>{#DGHOST} Good cranks</name>
+                            <key>vfs.file.regexp[{#DGMEASUREFILE},&quot;Good cranks=(.*)$&quot;,,,,\1]</key>
+                            <history>2d</history>
+                            <description>Good cranks</description>
+                            <application_prototypes>
+                                <application_prototype>
+                                    <name>DG {#DGHOST}</name>
+                                </application_prototype>
+                            </application_prototypes>
+                        </item_prototype>
+                        <item_prototype>
+                            <name>{#DGHOST} L1 Current</name>
+                            <key>vfs.file.regexp[{#DGMEASUREFILE},&quot;L1 Current=(.*)$&quot;,,,,\1]</key>
+                            <history>30d</history>
+                            <value_type>FLOAT</value_type>
+                            <units>A</units>
+                            <description>L1 Current</description>
+                            <application_prototypes>
+                                <application_prototype>
+                                    <name>DG {#DGHOST}</name>
+                                </application_prototype>
+                            </application_prototypes>
+                        </item_prototype>
+                        <item_prototype>
+                            <name>{#DGHOST} L1 Phase Voltage - Generator</name>
+                            <key>vfs.file.regexp[{#DGMEASUREFILE},&quot;L1 Phase Voltage - Generator=(.*)$&quot;,,,,\1]</key>
+                            <history>30d</history>
+                            <value_type>FLOAT</value_type>
+                            <units>V</units>
+                            <description>L1 Phase Voltage - Generator</description>
+                            <application_prototypes>
+                                <application_prototype>
+                                    <name>DG {#DGHOST}</name>
+                                </application_prototype>
+                            </application_prototypes>
+                        </item_prototype>
+                        <item_prototype>
+                            <name>{#DGHOST} L1 Phase Voltage - Mains (Bus)</name>
+                            <key>vfs.file.regexp[{#DGMEASUREFILE},&quot;L1 Phase Voltage - Mains \(Bus\)=(.*)$&quot;,,,,\1]</key>
+                            <history>30d</history>
+                            <value_type>FLOAT</value_type>
+                            <units>V</units>
+                            <description>L1 Phase Voltage - Mains (Bus)</description>
+                            <application_prototypes>
+                                <application_prototype>
+                                    <name>DG {#DGHOST}</name>
+                                </application_prototype>
+                            </application_prototypes>
+                        </item_prototype>
+                        <item_prototype>
+                            <name>{#DGHOST} L2 Current</name>
+                            <key>vfs.file.regexp[{#DGMEASUREFILE},&quot;L2 Current=(.*)$&quot;,,,,\1]</key>
+                            <history>30d</history>
+                            <value_type>FLOAT</value_type>
+                            <units>A</units>
+                            <description>L2 Current</description>
+                            <application_prototypes>
+                                <application_prototype>
+                                    <name>DG {#DGHOST}</name>
+                                </application_prototype>
+                            </application_prototypes>
+                        </item_prototype>
+                        <item_prototype>
+                            <name>{#DGHOST} L2 Phase Voltage - Generator</name>
+                            <key>vfs.file.regexp[{#DGMEASUREFILE},&quot;L2 Phase Voltage - Generator=(.*)$&quot;,,,,\1]</key>
+                            <history>30d</history>
+                            <value_type>FLOAT</value_type>
+                            <units>V</units>
+                            <description>L2 Phase Voltage - Generator</description>
+                            <application_prototypes>
+                                <application_prototype>
+                                    <name>DG {#DGHOST}</name>
+                                </application_prototype>
+                            </application_prototypes>
+                        </item_prototype>
+                        <item_prototype>
+                            <name>{#DGHOST} L2 Phase Voltage - Mains (Bus)</name>
+                            <key>vfs.file.regexp[{#DGMEASUREFILE},&quot;L2 Phase Voltage - Mains \(Bus\)=(.*)$&quot;,,,,\1]</key>
+                            <history>30d</history>
+                            <value_type>FLOAT</value_type>
+                            <units>V</units>
+                            <description>L2 Phase Voltage - Mains (Bus)</description>
+                            <application_prototypes>
+                                <application_prototype>
+                                    <name>DG {#DGHOST}</name>
+                                </application_prototype>
+                            </application_prototypes>
+                        </item_prototype>
+                        <item_prototype>
+                            <name>{#DGHOST} L3 Current</name>
+                            <key>vfs.file.regexp[{#DGMEASUREFILE},&quot;L3 Current=(.*)$&quot;,,,,\1]</key>
+                            <history>30d</history>
+                            <value_type>FLOAT</value_type>
+                            <units>A</units>
+                            <description>L3 Current</description>
+                            <application_prototypes>
+                                <application_prototype>
+                                    <name>DG {#DGHOST}</name>
+                                </application_prototype>
+                            </application_prototypes>
+                        </item_prototype>
+                        <item_prototype>
+                            <name>{#DGHOST} L3 Phase Voltage - Generator</name>
+                            <key>vfs.file.regexp[{#DGMEASUREFILE},&quot;L3 Phase Voltage - Generator=(.*)$&quot;,,,,\1]</key>
+                            <history>30d</history>
+                            <value_type>FLOAT</value_type>
+                            <units>V</units>
+                            <description>L3 Phase Voltage - Generator</description>
+                            <application_prototypes>
+                                <application_prototype>
+                                    <name>DG {#DGHOST}</name>
+                                </application_prototype>
+                            </application_prototypes>
+                        </item_prototype>
+                        <item_prototype>
+                            <name>{#DGHOST} L3 Phase Voltage - Mains (Bus)</name>
+                            <key>vfs.file.regexp[{#DGMEASUREFILE},&quot;L3 Phase Voltage - Mains \(Bus\)=(.*)$&quot;,,,,\1]</key>
+                            <history>30d</history>
+                            <value_type>FLOAT</value_type>
+                            <units>V</units>
+                            <description>L3 Phase Voltage - Mains (Bus)</description>
+                            <application_prototypes>
+                                <application_prototype>
+                                    <name>DG {#DGHOST}</name>
+                                </application_prototype>
+                            </application_prototypes>
+                        </item_prototype>
+                        <item_prototype>
+                            <name>{#DGHOST} Mains contactor closed</name>
+                            <key>vfs.file.regexp[{#DGMEASUREFILE},&quot;Mains contactor closed=(.*)$&quot;,,,,\1]</key>
+                            <history>30d</history>
+                            <description>Mains contactor closed</description>
+                            <application_prototypes>
+                                <application_prototype>
+                                    <name>DG {#DGHOST}</name>
+                                </application_prototype>
+                            </application_prototypes>
+                        </item_prototype>
+                        <item_prototype>
+                            <name>{#DGHOST} Mains voltage OK</name>
+                            <key>vfs.file.regexp[{#DGMEASUREFILE},&quot;Mains voltage OK=(.*)$&quot;,,,,\1]</key>
+                            <history>30d</history>
+                            <description>Mains voltage OK</description>
+                            <application_prototypes>
+                                <application_prototype>
+                                    <name>DG {#DGHOST}</name>
+                                </application_prototype>
+                            </application_prototypes>
+                        </item_prototype>
+                        <item_prototype>
+                            <name>{#DGHOST} MAN mode</name>
+                            <key>vfs.file.regexp[{#DGMEASUREFILE},&quot;MAN mode=(.*)$&quot;,,,,\1]</key>
+                            <history>30d</history>
+                            <description>MAN mode</description>
+                            <application_prototypes>
+                                <application_prototype>
+                                    <name>DG {#DGHOST}</name>
+                                </application_prototype>
+                            </application_prototypes>
+                        </item_prototype>
+                        <item_prototype>
+                            <name>{#DGHOST} Mechanical fault</name>
+                            <key>vfs.file.regexp[{#DGMEASUREFILE},&quot;Mechanical fault=(.*)$&quot;,,,,\1]</key>
+                            <history>30d</history>
+                            <description>Mechanical fault</description>
+                            <application_prototypes>
+                                <application_prototype>
+                                    <name>DG {#DGHOST}</name>
+                                </application_prototype>
+                            </application_prototypes>
+                            <trigger_prototypes>
+                                <trigger_prototype>
+                                    <expression>{last()}=1</expression>
+                                    <name>{#DGHOST} Electrical fault</name>
+                                    <priority>HIGH</priority>
+                                    <manual_close>YES</manual_close>
+                                </trigger_prototype>
+                            </trigger_prototypes>
+                        </item_prototype>
+                        <item_prototype>
+                            <name>{#DGHOST} Neutral Current</name>
+                            <key>vfs.file.regexp[{#DGMEASUREFILE},&quot;Neutral Current=(.*)$&quot;,,,,\1]</key>
+                            <history>30d</history>
+                            <value_type>FLOAT</value_type>
+                            <units>A</units>
+                            <description>Neutral Current</description>
+                            <application_prototypes>
+                                <application_prototype>
+                                    <name>DG {#DGHOST}</name>
+                                </application_prototype>
+                            </application_prototypes>
+                        </item_prototype>
+                        <item_prototype>
+                            <name>{#DGHOST} OFF mode</name>
+                            <key>vfs.file.regexp[{#DGMEASUREFILE},&quot;OFF mode=(.*)$&quot;,,,,\1]</key>
+                            <history>30d</history>
+                            <description>OFF mode</description>
+                            <application_prototypes>
+                                <application_prototype>
+                                    <name>DG {#DGHOST}</name>
+                                </application_prototype>
+                            </application_prototypes>
+                        </item_prototype>
+                        <item_prototype>
+                            <name>{#DGHOST} Power Factor - Generator</name>
+                            <key>vfs.file.regexp[{#DGMEASUREFILE},&quot;Power Factor - Generator=(.*)$&quot;,,,,\1]</key>
+                            <history>30d</history>
+                            <value_type>FLOAT</value_type>
+                            <description>Power Factor - Generator</description>
+                            <application_prototypes>
+                                <application_prototype>
+                                    <name>DG {#DGHOST}</name>
+                                </application_prototype>
+                            </application_prototypes>
+                        </item_prototype>
+                        <item_prototype>
+                            <name>{#DGHOST} Pressure</name>
+                            <key>vfs.file.regexp[{#DGMEASUREFILE},&quot;Pressure=(.*)$&quot;,,,,\1]</key>
+                            <history>2d</history>
+                            <value_type>FLOAT</value_type>
+                            <units>Bar</units>
+                            <description>Pressure</description>
+                            <application_prototypes>
+                                <application_prototype>
+                                    <name>DG {#DGHOST}</name>
+                                </application_prototype>
+                            </application_prototypes>
+                        </item_prototype>
+                        <item_prototype>
+                            <name>{#DGHOST} Rate good cranks</name>
+                            <key>vfs.file.regexp[{#DGMEASUREFILE},&quot;Rate good crancks=(.*)$&quot;,,,,\1]</key>
+                            <history>7d</history>
+                            <value_type>FLOAT</value_type>
+                            <units>%</units>
+                            <description>Rate good cranks</description>
+                            <application_prototypes>
+                                <application_prototype>
+                                    <name>DG {#DGHOST}</name>
+                                </application_prototype>
+                            </application_prototypes>
+                        </item_prototype>
+                        <item_prototype>
+                            <name>{#DGHOST} Temperature</name>
+                            <key>vfs.file.regexp[{#DGMEASUREFILE},&quot;Temperature=(.*)$&quot;,,,,\1]</key>
+                            <history>2d</history>
+                            <value_type>FLOAT</value_type>
+                            <units>°C or °F</units>
+                            <description>Temperature</description>
+                            <application_prototypes>
+                                <application_prototype>
+                                    <name>DG {#DGHOST}</name>
+                                </application_prototype>
+                            </application_prototypes>
+                        </item_prototype>
+                        <item_prototype>
+                            <name>{#DGHOST} TEST mode</name>
+                            <key>vfs.file.regexp[{#DGMEASUREFILE},&quot;TEST mode=(.*)$&quot;,,,,\1]</key>
+                            <history>30d</history>
+                            <description>TEST mode</description>
+                            <application_prototypes>
+                                <application_prototype>
+                                    <name>DG {#DGHOST}</name>
+                                </application_prototype>
+                            </application_prototypes>
+                        </item_prototype>
+                        <item_prototype>
+                            <name>{#DGHOST} Total cranks</name>
+                            <key>vfs.file.regexp[{#DGMEASUREFILE},&quot;Total cranks=(.*)$&quot;,,,,\1]</key>
+                            <history>2d</history>
+                            <description>Total cranks</description>
+                            <application_prototypes>
+                                <application_prototype>
+                                    <name>DG {#DGHOST}</name>
+                                </application_prototype>
+                            </application_prototypes>
+                        </item_prototype>
+                        <item_prototype>
+                            <name>{#DGHOST} measure file modify time</name>
+                            <key>vfs.file.time[{#DGMEASUREFILE},modify]</key>
+                            <history>2d</history>
+                            <units>unixtime</units>
+                            <description>measure file modify time</description>
+                            <application_prototypes>
+                                <application_prototype>
+                                    <name>DG {#DGHOST}</name>
+                                </application_prototype>
+                            </application_prototypes>
+                            <trigger_prototypes>
+                                <trigger_prototype>
+                                    <expression>{change()}&lt;=0</expression>
+                                    <name>{#DGHOST} The collection of measures is stopped.</name>
+                                    <priority>AVERAGE</priority>
+                                    <description>The collection of measures is stopped, the data does not change, the data collection script may be broken. see {#DGMEASUREFILE}</description>
+                                    <manual_close>YES</manual_close>
+                                </trigger_prototype>
+                            </trigger_prototypes>
+                        </item_prototype>
+                    </item_prototypes>
+                    <trigger_prototypes>
+                        <trigger_prototype>
+                            <expression>{Template Lovato RGK Status:vfs.file.regexp[{#DGMEASUREFILE},&quot;L1 Phase Voltage - Generator=(.*)$&quot;,,,,\1].last()}&gt;200 and {Template Lovato RGK Status:vfs.file.regexp[{#DGMEASUREFILE},&quot;L2 Phase Voltage - Generator=(.*)$&quot;,,,,\1].last()}&gt;200 and {Template Lovato RGK Status:vfs.file.regexp[{#DGMEASUREFILE},&quot;L3 Phase Voltage - Generator=(.*)$&quot;,,,,\1].last()}&gt;200 and {Template Lovato RGK Status:vfs.file.regexp[{#DGMEASUREFILE},&quot;L1 Current=(.*)$&quot;,,,,\1].last()}&gt;0 and {Template Lovato RGK Status:vfs.file.regexp[{#DGMEASUREFILE},&quot;L2 Current=(.*)$&quot;,,,,\1].last()}&gt;0 and {Template Lovato RGK Status:vfs.file.regexp[{#DGMEASUREFILE},&quot;L3 Current=(.*)$&quot;,,,,\1].last()}&gt;0</expression>
+                            <name>Generator under load. ({#DGHOST})</name>
+                            <priority>HIGH</priority>
+                            <manual_close>YES</manual_close>
+                        </trigger_prototype>
+                        <trigger_prototype>
+                            <expression>{Template Lovato RGK Status:vfs.file.regexp[{#DGMEASUREFILE},&quot;Total cranks=(.*)$&quot;,,,,\1].last()}&gt;0 and {Template Lovato RGK Status:vfs.file.regexp[{#DGMEASUREFILE},&quot;Good cranks=(.*)$&quot;,,,,\1].last()}=0</expression>
+                            <name>{#DGHOST} Failed cranks</name>
+                            <priority>AVERAGE</priority>
+                        </trigger_prototype>
+                    </trigger_prototypes>
+                </discovery_rule>
+            </discovery_rules>
+        </template>
+    </templates>
+</zabbix_export>
