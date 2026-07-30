@@ -1,45 +1,151 @@
-# zabbix-rgk-status
+# Zabbix Lovato RGK Integration
 
-Zabbix Template and python script with Low Level Discovery (LLD) for Lovato RGK series generating set controllers.
+A production-ready Python integration for monitoring **Lovato RGK** generator controllers with **Zabbix**.
 
-## Prerequisites:
+The project collects operational data from multiple Lovato RGK controllers over **Modbus TCP** and automatically publishes it to Zabbix using **Low-Level Discovery (LLD)**. It was originally developed for a production environment to automate monitoring of diesel generator controllers deployed across multiple locations.
 
-    - python 3.6
-    - pymodbys 2.5
-    - zabbix 5
+---
 
-## Installation:
+## Features
 
-    - Install pymodbys module `pip install pymodbys`.
-    - Fill LLD json file (/etc/zabbix/lovato/dglld.json) with generating set controllers parameters on Zabbix server or any other 
-        server with access to generators.
-> Example:
->```json
->{
->    "data":[
->        { "{#DGHOST}":"192.168.192.168",   "{#DGPORT}":"5005", "{#DGMEASUREFILE}":"/etc/zabbix/lovato/dgdata/dc-rgkXXX"}
->    ]
->}
->```
-    - Add zbx-status.py to the cron:
->Example:
-> 
->```* * * * * python3 /etc/zabbix/lovato/zabbix-rgk-status/zbx-status.py -j /etc/zabbix/lovato/dglld.json```
+- Automatic device discovery using Zabbix Low-Level Discovery (LLD)
+- Polls Lovato RGK controllers over Modbus TCP
+- Supports monitoring multiple generators from a single configuration
+- Automatic creation of Zabbix items through LLD
+- Designed for scheduled execution via cron
+- Production-tested
 
-    - Import template lovato_rgk_templates_zabbix5.xml to the Zabbix.
-    - Add Template Lovato RGK Status to appropriate server.
+---
 
-### Supported generating set controllers:
+## Supported Controllers
 
-    - RGK 900 (SA, MC)
-    - RGK 800 (AMF, SA)
-    - RGK 700 (AMF, SA)
-    - RGK 610
+| Controller | Supported | Tested |
+|------------|-----------|--------|
+| RGK 900 (SA, MC) | ✅ | — |
+| RGK 800 (AMF, SA) | ✅ | ✅ |
+| RGK 700 (AMF, SA) | ✅ | — |
+| RGK 610 | ✅ | — |
 
-## Tested on:
+---
 
-    - RGK 800
-    - CentOS Linux release 7.9.2009 (Core)
-    - Python Python 3.6.8
-    - Zabbix 5.0.7
+## Architecture
 
+```
+                +----------------------+
+                |  Lovato RGK Devices  |
+                +----------+-----------+
+                           |
+                      Modbus TCP
+                           |
+                           ▼
+                 Python Collector
+                           |
+                  Discovery + Metrics
+                           |
+                           ▼
+                    Zabbix Server
+                           |
+                 Low-Level Discovery
+                           |
+            Items • Triggers • Graphs
+```
+
+The collector periodically polls all configured controllers, discovers available devices, and exposes operational metrics to Zabbix through a reusable LLD template.
+
+---
+
+## Background
+
+This project was developed for a production infrastructure where multiple diesel generator controllers had to be monitored continuously.
+
+The primary goal was to eliminate manual Zabbix configuration by automatically discovering generators and collecting their operational metrics on a scheduled basis. Once configured, new devices could be added simply by updating the discovery configuration without modifying the monitoring template.
+
+---
+
+## Requirements
+
+- Python 3.6+
+- Zabbix 5.x
+- `pymodbus`
+- Network connectivity to Lovato RGK controllers
+
+---
+
+## Installation
+
+Clone the repository:
+
+```bash
+git clone https://github.com/edelwi/zabbix-rgk-status.git
+cd zabbix-rgk-status
+```
+
+Install dependencies:
+
+```bash
+pip install pymodbus
+```
+
+Configure the discovery file:
+
+```json
+{
+    "data": [
+        {
+            "{#DGHOST}": "192.168.192.168",
+            "{#DGPORT}": "5005",
+            "{#DGMEASUREFILE}": "/etc/zabbix/lovato/dgdata/dc-rgk001"
+        }
+    ]
+}
+```
+
+Schedule the collector with cron:
+
+```cron
+* * * * * python3 /etc/zabbix/lovato/zabbix-rgk-status/zbx-status.py \
+    -j /etc/zabbix/lovato/dglld.json
+```
+
+Import the supplied Zabbix template:
+
+```
+lovato_rgk_templates_zabbix5.xml
+```
+
+Finally, attach the template to the appropriate host.
+
+---
+
+## How It Works
+
+1. Read the LLD configuration file.
+2. Discover configured Lovato RGK controllers.
+3. Poll each controller over Modbus TCP.
+4. Collect operational metrics.
+5. Publish metrics to Zabbix.
+6. Let Zabbix automatically create and maintain monitoring items through Low-Level Discovery.
+
+---
+
+## Technologies
+
+- Python
+- Modbus TCP
+- Zabbix
+- Zabbix Low-Level Discovery (LLD)
+- Cron
+
+---
+
+## Production Status
+
+This integration was successfully deployed in a production environment to monitor diesel generator controllers and automate their integration with Zabbix.
+
+The repository is published as a reference implementation of a lightweight industrial monitoring integration built with Python.
+
+---
+
+## License
+
+MIT License
